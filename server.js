@@ -8,7 +8,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = "http://localhost:3000";
+const allowedOrigins = ["http://localhost:3000", "https://votify.onrender.com"];
 
 // Global Use
 app.use(express.json());

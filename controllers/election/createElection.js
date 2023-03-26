@@ -1,5 +1,7 @@
 const electionModel = require("../../models/electionModel");
 const { StatusCodes } = require("http-status-codes");
+const handleCookies = require("../../utils/handleCookies");
+
 const createElection = async (req, res) => {
   const { title, voters, description, endDate, status } = req.body;
   const { userId } = req.cookies;
@@ -28,12 +30,15 @@ const createElection = async (req, res) => {
         endDate,
         status,
       });
-      res.cookie("electionId", election._id, {
-        httpOnly: true, //accessible only by web server
-        // secure: true,          //https
-        // sameSite: "None",     //cross-site cookie
-        // maxAge: 7 * 24 * 60 * 60 * 1000,       //cookie expiry: set to match rT
-      });
+
+      // res.cookie("electionId", election._id, {
+      //   httpOnly: true, //accessible only by web server
+      //   // secure: true,          //https
+      //   // sameSite: "None",     //cross-site cookie
+      //   // maxAge: 7 * 24 * 60 * 60 * 1000,       //cookie expiry: set to match rT
+      // });
+      handleCookies(res, "electionId", election._id);
+
       return res.status(StatusCodes.ACCEPTED).json(election);
     }
   } else {

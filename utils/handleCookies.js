@@ -5,7 +5,7 @@ const handleCookies = (res, key, value) => {
   res.cookie(key, value, {
     httpOnly: true,
     ...(deployment === "production" && { secure: true }),
-    // sameSite: "None", //cross-site cookie
+    ...(deployment === "production" && { sameSite: "None" }),
     maxAge: 1 * 24 * 60 * 60 * 1000,
   });
 };

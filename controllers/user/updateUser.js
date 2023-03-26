@@ -5,6 +5,10 @@ const updateUser = async (req, res) => {
   const { userId } = req.cookies;
   const { oldPassword, newPassword } = req.body;
 
+  if (Object.keys(req.body).length === 0) {
+    return res.status(200).json("emptyFields");
+  }
+
   if ((oldPassword, newPassword)) {
     const prevData = await userModel.findById(userId);
     const isPasswordCorrect = await bcrypt.compare(
@@ -21,14 +25,16 @@ const updateUser = async (req, res) => {
       { ...req.body, password: hashsedPassword },
       { new: true, runValidators: true }
     );
-    return res.status(200).json(data);
+    const { name: temptName, email: temptEmail, joined } = data;
+    return res.status(200).json({ name: temptName, email: temptEmail, joined });
   } else {
     const data = await userModel.findByIdAndUpdate(
       userId,
       { ...req.body },
       { new: true, runValidators: true }
     );
-    return res.status(200).json(data);
+    const { name: temptName, email: temptEmail, joined } = data;
+    return res.status(200).json({ name: temptName, email: temptEmail, joined });
   }
 };
 

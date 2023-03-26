@@ -3,13 +3,13 @@ const bcrypt = require("bcryptjs");
 
 const updateUser = async (req, res) => {
   const { userId } = req.cookies;
-  const { oldPassword, newPassword } = req.body;
 
   if (Object.keys(req.body).length === 0) {
     return res.status(200).json("emptyFields");
   }
+  const { oldPassword, newPassword } = req.body;
 
-  if ((oldPassword, newPassword)) {
+  if (oldPassword || newPassword) {
     const prevData = await userModel.findById(userId);
     const isPasswordCorrect = await bcrypt.compare(
       oldPassword,

@@ -1,4 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
+const handleCookies = require("../../utils/handleCookies");
 
 const electionModel = require("../../models/electionModel");
 const loginVote = async (req, res) => {
@@ -20,18 +21,22 @@ const loginVote = async (req, res) => {
     return voter.voterKey === voterKey && voter.name === voterName;
   });
   if (voter) {
-    res.cookie("voterId", voter._id, {
-      httpOnly: true, //accessible only by web server
-      // secure: true, //https
-      // sameSite: "None", //cross-site cookie
-      maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-    });
-    res.cookie("voterName", voter.name, {
-      httpOnly: true, //accessible only by web server
-      // secure: true, //https
-      // sameSite: "None", //cross-site cookie
-      maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-    });
+    // res.cookie("voterId", voter._id, {
+    //   httpOnly: true, //accessible only by web server
+    //   // secure: true, //https
+    //   // sameSite: "None", //cross-site cookie
+    //   maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    // });
+    handleCookies(res, "voterId", voter._id);
+
+    // res.cookie("voterName", voter.name, {
+    //   httpOnly: true, //accessible only by web server
+    //   // secure: true, //https
+    //   // sameSite: "None", //cross-site cookie
+    //   maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    // });
+    handleCookies(res, "voterName", voter.name);
+
     return res.status(200).json(voter);
   } else {
     return res.status(StatusCodes.OK).json("voterDoesNotExist");

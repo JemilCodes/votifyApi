@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../../models/userModel");
+const handleCookies = require("../../utils/handleCookies");
 
 async function login(req, res) {
   const { email, password } = req.body;
@@ -25,25 +26,34 @@ async function login(req, res) {
     );
 
     // Create secure cookie with refresh token
-    res.cookie("jwt", accessToken, {
-      httpOnly: true, //accessible only by web server
-      // secure: true, //https
-      // sameSite: "None", //cross-site cookie
-      maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-    });
 
-    res.cookie("userId", userData._id, {
-      httpOnly: true, //accessible only by web server
-      // secure: true,          //https
-      // sameSite: "None",     //cross-site cookie
-      maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-    });
-    res.cookie("email", userData.email, {
-      httpOnly: true, //accessible only by web server
-      // secure: true,          //https
-      // sameSite: "None",     //cross-site cookie
-      maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-    });
+    // res.cookie("jwt", accessToken, {
+    //   httpOnly: true, //accessible only by web server
+    //   // secure: true, //https
+    //   // sameSite: "None", //cross-site cookie
+    //   maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    // });
+
+    handleCookies(res, "jwt", accessToken);
+
+    // res.cookie("userId", userData._id, {
+    //   httpOnly: true, //accessible only by web server
+    //   // secure: true,          //https
+    //   // sameSite: "None",     //cross-site cookie
+    //   maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    // });
+
+    handleCookies(res, "userId", userData._id);
+
+    // res.cookie("email", userData.email, {
+    //   httpOnly: true, //accessible only by web server
+    //   // secure: true,          //https
+    //   // sameSite: "None",     //cross-site cookie
+    //   maxAge: 1 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
+    // });
+
+    handleCookies(res, "email", userData.email);
+
     const logged = await UserModel.findOneAndUpdate(
       { email },
       { isLoggedIn: true },

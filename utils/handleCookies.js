@@ -1,6 +1,5 @@
 const handleCookies = (res, key, value) => {
   const deployment = process.env.NODE_ENV;
-  console.log(deployment);
 
   res.cookie(key, value, {
     httpOnly: true,

@@ -31,7 +31,6 @@ const deleteAllElection = async (req, res) => {
 
   const isDeleted = await electionModel.deleteMany({
     createdBy: userId,
-    status: "building",
   });
 
   if (isDeleted) {

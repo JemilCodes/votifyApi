@@ -37,7 +37,6 @@ const getSingleElection = async (req, res) => {
       //   // maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
       // });
       handleCookies(res, "electionTitle", election.title);
-
       const { endDate, status, title } = election;
       return res.status(200).json({ endDate, status, title });
     }

@@ -2,7 +2,6 @@ const votedModel = require("../../models/votedModel");
 const { StatusCodes } = require("http-status-codes");
 
 const getSinglevoted2 = async (req, res) => {
-  console.log("gi");
   const { electionId } = req.cookies;
   const { voterId, voterName } = req.body;
   const voted = await votedModel.findOne({

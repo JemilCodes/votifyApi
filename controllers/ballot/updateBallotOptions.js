@@ -27,6 +27,9 @@ const updateBallotOptions = async (req, res) => {
 
     imageUploaded = await cloudinary.uploader.upload(base64, {
       folder: "votify",
+      // width: 150,
+      // height: 150,
+      // crop: "scale",
     });
     newOptions = options.map((option) => {
       if (option._id === optionId) {

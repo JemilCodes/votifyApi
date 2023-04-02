@@ -7,15 +7,19 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
+const appState = process.env.NODE_ENV;
 
-const allowedOrigins = ["http://localhost:3000", "https://votify.onrender.com"];
-
+const allowedOrigins = [
+  ...(appState === "production"
+    ? ["https://votify.onrender.com"]
+    : ["http://localhost:3000"]),
+];
 // Global Use
 app.use(express.json());
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));

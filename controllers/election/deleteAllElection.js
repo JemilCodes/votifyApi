@@ -1,6 +1,8 @@
 const ballotModel = require("../../models/ballotModel");
 const electionModel = require("../../models/electionModel");
 const votedModel = require("../../models/votedModel");
+const uploadModel = require("../../models/uploadModel");
+
 const deleteAllElection = async (req, res) => {
   const { userId } = req.cookies;
 
